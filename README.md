@@ -168,3 +168,59 @@ TotalSales = SUM(Sales[Quantity] * Sales[Price])
   - Power BI will recognize and list tables by name instead of "Sheet1".
   - Makes your queries more readable and manageable.
   - Easier refresh when the source file updates.
+ 
+## Time Intelligence
+
+- Time Intelligence is **one of the most important concepts in Power BI** — it lets you **analyze data over time**, such as comparing sales this year to last year, calculating year-to-date totals, or creating running totals. Mastering this requires
+- **a separate calendar table**, and here’s a full breakdown of what you need to know.
+
+---
+
+**1. 📅 What Is Time Intelligence in Power BI?**
+- Time Intelligence refers to DAX functions that help you perform calculations across dates — like:
+  - Year-to-Date (YTD), Quarter-to-Date (QTD), Month-to-Date (MTD)
+  - Previous periods (e.g., previous month, previous year)
+  - Rolling averages, running totals
+  - Same period last year
+  - Comparing growth vs. past periods
+
+---
+
+**2. ❓ Why You Need a Separate Calendar Table**
+- Power BI requires a proper date table to use time intelligence functions like ```TOTALYTD```, ```SAMEPERIODLASTYEAR```, etc.
+  - Here's why:
+    - **Completeness**: Your fact table (like Sales) may not contain every single date, especially if there were no transactions.
+    - **Relationships**: Time intelligence functions require a relationship between your fact table and a continuous date table.
+    - **Filtering & Grouping**: You can group by year, month, week, quarter, etc., from one source.
+    - **Consistent Logic**: You can create time-based columns like “Fiscal Year,” “IsWeekend,” etc., once — and use them across your report.
+
+ ---
+
+ **3. 🛠️ How to Create a Calendar Table**
+ - You have two common ways:
+   - **Option 1: Auto-generated in DAX**
+   - ```DAX
+     Calendar = CALENDAR(DATE(2024,11,1), DATE(2025,10,31))
+     ```
+     - This creates a new table that contains **one column only**, named ```Date``` that contains **every single day** from November 1, 2024 to October 31, 2025. It is **continous, sequential with no gaps**. The column's Data type is **Date**.
+     - 2024-11-01, 2024-11-02, etc.
+     - This table **does not** include:
+       - **Year**, **Month**, **Quarter** columns
+       - **Month Names**, **Weekdays**, or **Fiscal logic**
+       - **Sorting logic** for month names (e.g., Jan, Feb... ordered alphabetically unless fixed manually). 
+   - **Option 2: With additional columns**
+   - ```DAX
+     Calendar = 
+      ADDCOLUMNS (
+          CALENDAR(DATE(2020, 1, 1), DATE(2030, 12, 31)),
+          "Year", YEAR([Date]),
+          "Month Number", MONTH([Date]),
+          "Month Name", FORMAT([Date], "MMMM"),
+          "Quarter", "Q" & FORMAT([Date], "Q"),
+          "Day", DAY([Date]),
+          "Weekday", FORMAT([Date], "dddd"),
+          "IsWeekend", IF(WEEKDAY([Date], 2) > 5, TRUE, FALSE)
+      )
+     ```
+
+     
