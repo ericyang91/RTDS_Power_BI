@@ -222,5 +222,12 @@ TotalSales = SUM(Sales[Quantity] * Sales[Price])
           "IsWeekend", IF(WEEKDAY([Date], 2) > 5, TRUE, FALSE)
       )
      ```
+| Date       | Year | Month Number | Month Name | Quarter | Day | Weekday   | IsWeekend |
+|------------|------|---------------|-------------|---------|-----|------------|------------|
+| 2024-11-01 | 2024 | 11            | November    | Q1      | 1   | Friday     | FALSE      |
+| 2024-11-02 | 2024 | 11            | November    | Q1      | 2   | Saturday   | TRUE       |
+| 2024-11-03 | 2024 | 11            | November    | Q1      | 3   | Sunday     | TRUE       |
+| ...        | ...  | ...           | ...         | ...     | ... | ...        | ...        |
+| 2025-10-31 | 2025 | 10            | October     | Q4      | 31  | Friday     | FALSE      |
 
-     
+    
