@@ -229,5 +229,54 @@ TotalSales = SUM(Sales[Quantity] * Sales[Price])
 | 2024-11-03 | 2024 | 11            | November    | Q1      | 3   | Sunday     | TRUE       |
 | ...        | ...  | ...           | ...         | ...     | ... | ...        | ...        |
 | 2025-10-31 | 2025 | 10            | October     | Q4      | 31  | Friday     | FALSE      |
+    - Once created, go to Model View and:
+      - Set the column [Date] as "Date" data type
+      - Mark as Date Table (very important!)
+      - Create a relationship to your fact table (e.g., Sales[Date] → Calendar[Date])
 
+---
+
+**4. Common Time Intelligence Calculations**
+- You must use your Calendar table's [Date] column in these formulas.
+- **Year-to-date (YTD)**
+  - ```DAX
+      Sales YTD = TOTALYTD(SUM(Sales[Amount]), 'Calendar'[Date])
+    ```
+- **Previous Year**
+  - ```DAX
+      Sales Last Year = CALCULATE(SUM(Sales[Amount]), SAMEPERIODLASTYEAR('Calendar'[Date]))
+    ```
+- **Month-to-date (MTD)**
+  - ```DAX
+      Sales MTD = TOTALMTD(SUM(Sales[Amount]), 'Calendar'[Date])
+    ```
+- **Rolling 12 Months**
+  - ```DAX
+      Rolling 12M Sales =
+      CALCULATE(
+        SUM(Sales[Amount]),
+        DATESINPERIOD('Calendar'[Date], MAX('Calendar'[Date]), -12, MONTH)
+      )
+    ```
+  - It calculates the sum of sales over the last 12 months, ending at the current date in context.
     
+- **YoY Growth %**
+  - ```DAX
+      YoY Growth % =
+      DIVIDE(
+        [Sales YTD] - [Sales Last Year],
+        [Sales Last Year]
+      )
+    ```
+
+---
+
+**5. Common Mistakes to Avoid**
+
+| Mistake                                 | Why It's a Problem                                              |
+|-----------------------------------------|------------------------------------------------------------------|
+| Not using a Calendar table              | Breaks all time intelligence functions                          |
+| Using the date from the fact table      | Time functions won’t work properly                              |
+| Not marking your calendar as "Date Table" | Power BI can't apply DAX time logic                             |
+| Date column not unique                  | Relationships won’t work                                        |
+| Calendar doesn’t span full range of data | Time functions return blanks                                    |
