@@ -168,7 +168,64 @@ TotalSales = SUM(Sales[Quantity] * Sales[Price])
   - Power BI will recognize and list tables by name instead of "Sheet1".
   - Makes your queries more readable and manageable.
   - Easier refresh when the source file updates.
- 
+
+---
+
+## Power BI DAX
+
+**📌 1. DAX Fundamentals**
+- What is DAX?
+  - Formula language used in Power BI, Power Pivot, and SSAS Tabular models. Think of it as Excel formulas plus SQL-like capabilities.
+- Syntax Basics
+  - **1. Columns vs. Measures**
+
+| Feature           | Calculated Column                                       | Measure                                                  |
+|------------------|----------------------------------------------------------|----------------------------------------------------------|
+| Row-by-row        | ✅ Yes (each row has a result)                           | ❌ No (calculated across rows, based on filters)         |
+| Stored in model?  | ✅ Yes                                                   | ❌ No (calculated on demand)                             |
+| Use case          | - Derived values per row<br>- Used in slicers/filters   | - Aggregated KPIs (totals, averages, %s)                 |
+| Example           | `Profit = Sales[Revenue] - Sales[Cost]`                 | `Total Sales = SUM(Sales[Revenue])`                      |
+
+---
+
+  - **2. Common Aggregate Functions**
+    - ```SUM(column)```
+      - Returns the total of all values in a column (must be numeric).
+      - ```DAX
+          Total Sales = SUM(Sales[Amount])
+        ```
+    - ```AVERAGE(column)```
+      - Returns the arithmetic mean of values in a column.
+      - ```DAX
+          Average Discount = AVERAGE(Sales[Discount])
+        ```
+    - ```COUNTROWS(table)```
+      - Counts the number of rows in a table (great for counting filtered rows).
+      - ```DAX
+          Number of Orders = COUNTROWS(Sales)
+    - ```DISTINCTCOUNT(column)```
+      - Returns the number of unique (distinct) values in a column.
+      - ```DAX
+          Unique Customers = DISTINCTCOUNT(Sales[CustomerID])
+        ```
+---
+
+### 3. Logical & Arithmetic Operators
+
+| Type          | Operator | Example                                      | Description                    |
+|---------------|----------|----------------------------------------------|--------------------------------|
+| Addition      | `+`      | `Sales[Price] + Sales[Tax]`                 | Adds numbers                   |
+| Subtraction   | `-`      | `Sales[Price] - Sales[Discount]`            | Subtracts numbers              |
+| Multiplication| `*`      | `Sales[Qty] * Sales[UnitPrice]`             | Multiplies values              |
+| Division      | `/`      | `Sales[Revenue] / Sales[Units]`             | Divides values                 |
+| Equality      | `=`      | `Sales[Region] = "West"`                    | True/False comparison          |
+| Not equal     | `<>`     | `Sales[Category] <> "Electronics"`          | Not equal                      |
+| AND           | `&&`     | `[Sales] > 1000 && [Profit] > 200`          | Both conditions must be true   |
+| OR            | `||`     | `[Region] = "East" || [Region] = "West"`    | At least one must be true      |
+
+
+---
+
 ## Time Intelligence
 
 - Time Intelligence is **one of the most important concepts in Power BI** — it lets you **analyze data over time**, such as comparing sales this year to last year, calculating year-to-date totals, or creating running totals. Mastering this requires
