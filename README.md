@@ -171,7 +171,7 @@ TotalSales = SUM(Sales[Quantity] * Sales[Price])
 
 ---
 
-## Power BI DAX
+## Power BI DAX (Data Analysis Expressions)
 
 **📌 1. DAX Fundamentals**
 - What is DAX?
@@ -185,6 +185,28 @@ TotalSales = SUM(Sales[Quantity] * Sales[Price])
 | Stored in model?  | ✅ Yes                                                   | ❌ No (calculated on demand)                             |
 | Use case          | - Derived values per row<br>- Used in slicers/filters   | - Aggregated KPIs (totals, averages, %s)                 |
 | Example           | `Profit = Sales[Revenue] - Sales[Cost]`                 | `Total Sales = SUM(Sales[Revenue])`                      |
+
+  - **2. Measures**
+    - A **Measure** in Power BI is a **calculated value** used to perform aggregations like totals, averages, ratios, percentages, or rankings **based on filters and user interactions** (like slicers or visual selections). It is a calculation written using DAX.
+    - Key Characteristics of Measures:
+
+| Feature             | Description                                                                 |
+|---------------------|-----------------------------------------------------------------------------|
+| Calculated on-demand | Measures are not stored in the data model—they are computed when needed.    |
+| Filter-aware         | They react to filters from slicers, rows, columns, or report visuals.       |
+| Optimized            | Better for performance than calculated columns when doing aggregation.      |
+| Used in visuals      | Measures drive KPIs, cards, charts, and dynamic text.                       |
+
+  - **3. Measures example**
+    - ```Total Sales = SUM(Sales[Amount])```
+    - If a slicer filters the report to just "East Region", the measure automatically adjusts and returns the total for that region only.
+  - **4. Common Use Cases:**
+    - Total sales, total profit
+    - Average discount
+    - % of total revenue
+    - Monthly/Yearly comparisons
+    - Rankings (e.g. Top 5 Products)
+
 
 ---
 
@@ -211,7 +233,7 @@ TotalSales = SUM(Sales[Quantity] * Sales[Price])
     ```
 ---
 
-### 3. Logical & Arithmetic Operators
+**3. Logical & Arithmetic Operators**
 
 | Type          | Operator | Example                                      | Description                    |
 |---------------|----------|----------------------------------------------|--------------------------------|
@@ -226,20 +248,20 @@ TotalSales = SUM(Sales[Quantity] * Sales[Price])
 
 ---
 
-### 4. Example: Combining It All
+**4. Example: Combining It All**
 
-Let’s say we want to build a measure to calculate **high-value sales count** where:
+- Let’s say we want to build a measure to calculate **high-value sales count** where:
 
-- Sales amount is greater than $500  
-- The region is not `"South"`
-
-```dax
-High Value Sales Count = 
-CALCULATE(
-    COUNTROWS(Sales),
-    Sales[Amount] > 500 && Sales[Region] <> "South"
-)
-```
+  - Sales amount is greater than $500  
+  - The region is not `"South"`
+  
+  ```dax
+  High Value Sales Count = 
+  CALCULATE(
+      COUNTROWS(Sales),
+      Sales[Amount] > 500 && Sales[Region] <> "South"
+  )
+  ```
 
 ---
 
