@@ -188,26 +188,27 @@ TotalSales = SUM(Sales[Quantity] * Sales[Price])
 
 ---
 
-  - **2. Common Aggregate Functions**
-    - ```SUM(column)```
-      - Returns the total of all values in a column (must be numeric).
-      - ```DAX
-          Total Sales = SUM(Sales[Amount])
-        ```
-    - ```AVERAGE(column)```
-      - Returns the arithmetic mean of values in a column.
-      - ```DAX
-          Average Discount = AVERAGE(Sales[Discount])
-        ```
-    - ```COUNTROWS(table)```
-      - Counts the number of rows in a table (great for counting filtered rows).
-      - ```DAX
-          Number of Orders = COUNTROWS(Sales)
-    - ```DISTINCTCOUNT(column)```
-      - Returns the number of unique (distinct) values in a column.
-      - ```DAX
-          Unique Customers = DISTINCTCOUNT(Sales[CustomerID])
-        ```
+**2. Common Aggregate Functions**
+
+- ```SUM(column)```
+  - Returns the total of all values in a column (must be numeric).
+  - ```DAX
+      Total Sales = SUM(Sales[Amount])
+    ```
+- ```AVERAGE(column)```
+  - Returns the arithmetic mean of values in a column.
+  - ```DAX
+      Average Discount = AVERAGE(Sales[Discount])
+    ```
+- ```COUNTROWS(table)```
+  - Counts the number of rows in a table (great for counting filtered rows).
+  - ```DAX
+      Number of Orders = COUNTROWS(Sales)
+- ```DISTINCTCOUNT(column)```
+  - Returns the number of unique (distinct) values in a column.
+  - ```DAX
+      Unique Customers = DISTINCTCOUNT(Sales[CustomerID])
+    ```
 ---
 
 ### 3. Logical & Arithmetic Operators
@@ -223,6 +224,22 @@ TotalSales = SUM(Sales[Quantity] * Sales[Price])
 | AND           | `&&`     | `[Sales] > 1000 && [Profit] > 200`          | Both conditions must be true   |
 | OR            | `||`     | `[Region] = "East" || [Region] = "West"`    | At least one must be true      |
 
+---
+
+### 4. Example: Combining It All
+
+Let’s say we want to build a measure to calculate **high-value sales count** where:
+
+- Sales amount is greater than $500  
+- The region is not `"South"`
+
+```dax
+High Value Sales Count = 
+CALCULATE(
+    COUNTROWS(Sales),
+    Sales[Amount] > 500 && Sales[Region] <> "South"
+)
+```
 
 ---
 
